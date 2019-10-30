@@ -17,9 +17,7 @@ io.on('connection', (socket) => {
     console.log('connected!');
     // Create a new game room and notify the creator of game.
     socket.on('createGame', (data) => {
-        console.log('lala');
         socket.join(`room-${++rooms}`);
-        console.log(`room-${rooms}`);
         socket.emit('newGame', { name: data.name, room: `room-${rooms}` });
     });
 
@@ -39,10 +37,12 @@ io.on('connection', (socket) => {
        * Handle the turn played by either player and notify the other.
        */
     socket.on('playTurn', (data) => {
-        socket.broadcast.to(data.room).emit('turnPlayed', {
-            tile: data.tile,
-            room: data.room
-        });
+      console.log(data.tile);
+      console.log(data.room);
+      socket.broadcast.to(data.room).emit('turnPlayed', {
+          tile: data.tile,
+          room: data.room
+      });
     });
 
     /**
