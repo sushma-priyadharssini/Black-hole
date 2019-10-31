@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
     /**
        * Handle the turn played by either player and notify the other.
        */
-    socket.on('playTurn', (data) => {
+    socket.on('playTurn', function (data) {
       console.log(data.tile);
       console.log(data.room);
       socket.broadcast.to(data.room).emit('turnPlayed', {
