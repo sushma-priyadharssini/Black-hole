@@ -1,97 +1,102 @@
 <template>
   <v-container fluid>
-    <div v-show='displayLogin'>
+    <div id='displayLogin'>
+      <h2>Black Hole Game</h2>
       <v-row>
-        <h4>Create a new Game</h4>
-        <v-col cols="4" md="4">
-          <v-text-field v-model="firstPlayerName" label="Enter your name" required></v-text-field>
-        </v-col>
+        <ul>
+          <li>Black Hole is a two-player strategy game where each player starts with 10 tiles numbered 1 through 10. </li>
+          <li>The number on the tiles represent both their values and the order in which they are placed onto a triangular board.
+          <li>The board has 21 spaces so one space remains uncovered. </li>
+          <li> Once all the tiles have been placed, the tiles that surround the empty space are sucked into the black hole. </li>
+          <li>The objective of the game is to have fewer points sucked into the black hole (so you have the higher overall score remaining on the board) than the other player.</li>
+        </ul>
       </v-row>
-      <v-row>
-        <v-col cols="4">
-          <v-btn v-on:click="newGame" small>New Game</v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <h4>Join an existing game</h4>
-        <v-col cols="4" md="4">
-          <v-text-field v-model="secondPlayerName" label="Enter your name" required></v-text-field>
-        </v-col>
-        <v-col cols="4" md="4">
-          <v-text-field v-model="roomID" label="Enter Game ID" required></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <v-btn v-on:click="joinGame" small>Join Game</v-btn>
-        </v-col>
-      </v-row>
+      <div id="loginForm">
+        <v-row align="center" justify="center">
+          <v-col cols="8">
+            <v-text-field  v-model="playerName" label="Enter your name" outlined required></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-btn v-on:click="newGame" color="success" rounded x-large>New Game</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn v-on:click="openRoomDialog" color="orange" rounded x-large>Join Game</v-btn>
+        </v-row>
+      </div>
     </div>
-    <div v-show='displayBoard'>
+    <div id='displayBoard' style="display:none;">
       <h2 id="userHello"></h2>
       <h3 id="turn"></h3>
       <v-row>
         <v-col cols="12">
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <!-- <v-card v-for="n in 1" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="0" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="0" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <!-- <v-card v-for="n in 2" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="1" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="2" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="1" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="2" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <!-- <v-card v-for="n in 3" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="3" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="4" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="5" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="3" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="4" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="5" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <!-- <v-card v-for="n in 4" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="6" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="7" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="8" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="9" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="6" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="7" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="8" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="9" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-          <!-- <v-card v-for="n in 5" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="10" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="10" v-on:click="markClicked" outlined tile>?</v-card>
             <v-card class="ma-2 pa-2" id="11" v-on:click="markClicked" outlined tile>?</v-card>
             <v-card class="ma-2 pa-2" id="12" v-on:click="markClicked" outlined tile>?</v-card>
             <v-card class="ma-2 pa-2" id="13" v-on:click="markClicked" outlined tile>?</v-card>
             <v-card class="ma-2 pa-2" id="14" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <!-- <v-card v-for="n in 6" v-bind:key="n" class="ma-2 pa-2" v-on:click="markClicked" outlined tile>?</v-card> -->
-            <v-card class="ma-2 pa-2" id="15" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="16" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="17" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="18" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="19" v-on:click="markClicked" outlined tile>?</v-card>
-            <v-card class="ma-2 pa-2" id="20" v-on:click="markClicked" outlined tile>?</v-card>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-card class="ma-2 pa-2 tile" id="15" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="16" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="17" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="18" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="19" v-on:click="markClicked" outlined tile>?</v-card>
+            <v-card class="ma-2 pa-2 tile" id="20" v-on:click="markClicked" outlined tile>?</v-card>
           </v-row>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-row :align="align" :justify="justify" class="grey lighten-5">
-            <v-btn small>Reset</v-btn>
+          <v-row align="center" justify="center" class="grey lighten-5">
+            <v-btn @click="resetGame" small>Reset</v-btn>
           </v-row>
       </v-col>
       </v-row>
     </div>
+    <v-dialog v-model="dialog" persistent max-width="400px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Join a Room</span>
+        </v-card-title>
+        <v-card-text>
+          <v-text-field label="Enter Room Id " v-model="roomId" required></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text v-on:click="joinGame">Join</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
-import JQuery from 'jquery';
+import $ from 'jquery';
 import io from 'socket.io-client';
-import Player from '../helpers/player'
-import Game from '../helpers/game'
+import _ from 'lodash';
+import Player from '../helpers/player';
+import Game from '../helpers/game';
 
-let $ = JQuery,
-firstPlayerCount = 1,
-secondPlayerCount = 1,
+let canStart = false,
 player, game;
 
 const socket = io.connect('http://localhost:4000');
@@ -109,6 +114,7 @@ socket.on('player1', () => {
   const message = `Hello, ${player.getPlayerName()}`;
   $('#userHello').html(message);
   player.setCurrentTurn(true);
+  canStart = true;
 });
 
 //Update UI for player 2
@@ -117,66 +123,107 @@ socket.on('player2', (data) => {
   game = new Game(data.room); // Create game for player 2
   game.displayBoard(message);
   player.setCurrentTurn(false);
+  canStart = true;
 });
 
 //Opponent played his turn. Update UI. Allow the current player to play now.
 socket.on('turnPlayed', (data) => {
   const opponentType = player.getPlayerType() === 'P1' ? 'P2' : 'P1';
-  game.updateBoard(opponentType, data.tile, firstPlayerCount, secondPlayerCount);
+  game.updateBoard(opponentType, data.tile);
   player.setCurrentTurn(true);
+});
+
+socket.on('winnerDeclared', (data) => {
+  console.log(data);
+  if (player.getPlayerType() === 'P1') {
+    (data.winner === 'P1') ? alert('You won by ' + data.score) :
+    alert('You lost by ' + data.score);
+  }
+});
+
+//reset Game board for the opponent.
+socket.on('resetGameBoard', () => {
+  console.log('resetGame');
+  game.resetGame();
+  player.setCurrentTurn(false);
 });
 
 export default {
   name: 'App',
   data () {
       return {
-        justify: 'center',
-        align: 'center',
         key: 0,
-        displayBoard: false,
-        displayLogin: true,
-        firstPlayerName: '',
-        secondPlayerName: '',
-        roomID: ''
+        dialog: false,
+        playerName: '',
+        roomId: ''
       }
   },
   methods: {
     markClicked (event) {
+      if (!canStart) {
+        alert('Wait for the Opponent to Join');
+        return;
+      }
       if (!player.getCurrentTurn() || !game) {
         alert('Its not your turn!');
         return;
-      }
-      if (event.srcElement.innerText === '?') {
+      } else if (event.srcElement.innerText === '?') {
         this.playTurn(event.srcElement.id, game.getRoomId());
-        game.updateBoard(player.getPlayerType(), event.srcElement.id, firstPlayerCount, secondPlayerCount);
+        game.updateBoard(player.getPlayerType(), event.srcElement.id);
+        if (!_.isUndefined(game.score)) {
+          if (game.score === 0) {
+            alert('The game is draw!');
+          } else {
+            socket.emit('declareWinner', { room : game.getRoomId(), winner: game.winner, score: game.score });
+            game.winner === player.getPlayerType() ? alert('You won by ' + game.score) :
+            alert('You lost by ' + game.score);
+          }
+        }
         player.setCurrentTurn(false);
       }
     },
+
     playTurn (tile, roomId) { // Emit an event to update other player that you've played your turn.
       socket.emit('playTurn', { tile: tile, room: roomId });
     },
+
     newGame () {
-      if (!this.firstPlayerName.length) {
+      if (!this.playerName.length) {
         alert('Please enter your name.');
         return;
       }
-      socket.emit('createGame', { name : this.firstPlayerName });
-      player = new Player(this.firstPlayerName, 'P1');
-      this.displayLogin = false;
-      this.displayBoard = true;
+      socket.emit('createGame', { name : this.playerName });
+      player = new Player(this.playerName, 'P1');
     },
+
     joinGame () {
-      if (!this.secondPlayerName.length || !this.roomID) {
+      this.dialog = false;
+      if (!this.roomId) {
         alert('Please enter your name and game ID.');
         return;
       }
-      socket.emit('joinGame', { name: this.secondPlayerName, room: this.roomID });
-      player = new Player(this.secondPlayerName, 'P2');
-      this.displayLogin = false;
-      this.displayBoard = true;
+      socket.emit('joinGame', { name: this.playerName, room: this.roomId });
+      player = new Player(this.playerName, 'P2');
+    },
+
+    openRoomDialog () {
+      if (!this.playerName.length) {
+        alert('Please enter your name.');
+        return;
+      }
+      this.dialog = true;
+    },
+
+    resetGame () {
+      socket.emit('resetGame', { room: game.getRoomId() });
+      game.resetGame();
+      player.setCurrentTurn(true);
     }
   }
 };
 </script>
 <style>
+  #loginForm {
+    margin: 10%;
+  }
 </style>
