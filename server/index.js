@@ -37,12 +37,25 @@ io.on('connection', (socket) => {
        * Handle the turn played by either player and notify the other.
        */
     socket.on('playTurn', function (data) {
-      console.log(data.tile);
-      console.log(data.room);
       socket.broadcast.to(data.room).emit('turnPlayed', {
           tile: data.tile,
           room: data.room
       });
+    });
+
+    socket.on('declareWinner', function (data) {
+      console.log(data);
+      socket.broadcast.to(data.room).emit('winnerDeclared', {
+          winner: data.winner,
+          score: data.score
+      });
+    });
+
+    /**
+       * Handle the reset Game to notify the other user
+       */
+    socket.on('resetGame', function (data) {
+      socket.broadcast.to(data.room).emit('resetGameBoard', {});
     });
 
     /**
