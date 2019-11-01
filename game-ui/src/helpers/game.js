@@ -102,10 +102,10 @@ class Game {
       }
     });
 
-    this.getWinner(firstCount, secondCount);
+    this.setWinner(firstCount, secondCount);
   }
 
-  getWinner (firstCount, secondCount) { //P2 win status is calculated here
+  setWinner (firstCount, secondCount) { //P2 win status is calculated here
     if (firstCount > secondCount) {
       this.score = (firstCount - secondCount);
       this.winner = 'P2';
