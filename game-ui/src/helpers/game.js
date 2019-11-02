@@ -117,6 +117,19 @@ class Game {
     }
   }
 
+  displayScore (playerType, winner, score) {
+    let scoreBoard = $('#score-board');
+    scoreBoard.show();
+    if (score === 0) {
+      scoreBoard.text('The game ended in tie!');
+    }
+    if (winner === playerType) {
+      scoreBoard.text('Yay! You won by ' + score + ' points');
+    } else {
+      scoreBoard.text('Uh oh! You lost by ' + score + ' points');
+    }
+  }
+
   resetGame() {
     let i = 0;
     for(i=0; i < 21; i++) {
