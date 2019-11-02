@@ -93,7 +93,6 @@
 <script>
 import $ from 'jquery';
 import io from 'socket.io-client';
-import _ from 'lodash';
 import Player from '../helpers/player';
 import Game from '../helpers/game';
 
@@ -134,14 +133,13 @@ socket.on('turnPlayed', (data) => {
   player.setCurrentTurn(true);
 });
 
+//Notify the winner and score to the first player
 socket.on('winnerDeclared', (data) => {
-  console.log(data);
   game.displayScore(player.getPlayerType(), data.winner, data.score);
 });
 
 //reset Game board for the opponent.
 socket.on('resetGameBoard', () => {
-  console.log('resetGame');
   game.resetGame();
   player.setCurrentTurn(false);
 });
@@ -168,7 +166,7 @@ export default {
       } else if (event.srcElement.innerText === '?') {
         this.playTurn(event.srcElement.id, game.getRoomId());
         game.updateBoard(player.getPlayerType(), event.srcElement.id);
-        if (!_.isUndefined(game.score)) {
+        if (game.winner) {
           socket.emit('declareWinner', { room : game.getRoomId(), winner: game.winner, score: game.score });
           game.displayScore(player.getPlayerType(), game.winner, game.score);
         }

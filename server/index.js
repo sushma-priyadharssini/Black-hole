@@ -43,6 +43,9 @@ io.on('connection', (socket) => {
       });
     });
 
+    /**
+       * Handle the Game winner to notify the other user
+       */
     socket.on('declareWinner', function (data) {
       console.log(data);
       socket.broadcast.to(data.room).emit('winnerDeclared', {

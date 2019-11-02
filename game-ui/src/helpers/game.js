@@ -26,7 +26,7 @@ class Game {
       tile.css('background-color', 'red');
       this.secondPlayerCount++;
     }
-    if (this.secondPlayerCount > 10) {
+    if (this.firstPlayerCount > 10 && this.secondPlayerCount > 10) {
       this.getWinner();
     }
   }
@@ -114,6 +114,7 @@ class Game {
       this.winner = 'P1';
     } else {
       this.score = 0;
+      this.winner = 'tie';
     }
   }
 
@@ -122,6 +123,7 @@ class Game {
     scoreBoard.show();
     if (score === 0) {
       scoreBoard.text('The game ended in tie!');
+      return;
     }
     if (winner === playerType) {
       scoreBoard.text('Yay! You won by ' + score + ' points');
@@ -137,8 +139,11 @@ class Game {
       tile[0].innerHTML = '?';
       tile.css('background-color', 'white');
     }
+    $('#score-board').hide();
     this.firstPlayerCount = 1;
     this.secondPlayerCount = 1;
+    this.winner = '';
+    this.score = 0;
   }
 
 }
