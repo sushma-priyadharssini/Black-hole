@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <div id='displayLogin'>
-      <h2>Black Hole Game</h2>
+      <h2 id="game-title">Black Hole Game</h2>
       <v-row>
         <ul>
           <li>Black Hole is a two-player strategy game where each player starts with 10 tiles numbered 1 through 10. </li>
@@ -24,9 +24,10 @@
         </v-row>
       </div>
     </div>
-    <div id='displayBoard' style="display:none;">
+    <div id='displayBoard'>
       <h2 id="userHello"></h2>
       <h3 id="turn"></h3>
+      <h1 id="score-board"></h1>
       <v-row>
         <v-col cols="12">
           <v-row align="center" justify="center" class="grey lighten-5">
@@ -69,7 +70,7 @@
           <v-row align="center" justify="center" class="grey lighten-5">
             <v-btn @click="resetGame" small>Reset</v-btn>
           </v-row>
-      </v-col>
+        </v-col>
       </v-row>
     </div>
     <v-dialog v-model="dialog" persistent max-width="400px">
@@ -135,10 +136,7 @@ socket.on('turnPlayed', (data) => {
 
 socket.on('winnerDeclared', (data) => {
   console.log(data);
-  if (player.getPlayerType() === 'P1') {
-    (data.winner === 'P1') ? alert('You won by ' + data.score) :
-    alert('You lost by ' + data.score);
-  }
+  game.displayScore(player.getPlayerType(), data.winner, data.score);
 });
 
 //reset Game board for the opponent.
@@ -171,13 +169,8 @@ export default {
         this.playTurn(event.srcElement.id, game.getRoomId());
         game.updateBoard(player.getPlayerType(), event.srcElement.id);
         if (!_.isUndefined(game.score)) {
-          if (game.score === 0) {
-            alert('The game is draw!');
-          } else {
-            socket.emit('declareWinner', { room : game.getRoomId(), winner: game.winner, score: game.score });
-            game.winner === player.getPlayerType() ? alert('You won by ' + game.score) :
-            alert('You lost by ' + game.score);
-          }
+          socket.emit('declareWinner', { room : game.getRoomId(), winner: game.winner, score: game.score });
+          game.displayScore(player.getPlayerType(), game.winner, game.score);
         }
         player.setCurrentTurn(false);
       }
@@ -223,7 +216,20 @@ export default {
 };
 </script>
 <style>
+  #game-title {
+    text-align: center;
+  }
+
   #loginForm {
     margin: 10%;
+  }
+
+  #displayBoard {
+    display: none;
+  }
+
+  #score-board {
+    text-align: center;
+    display: none;
   }
 </style>
