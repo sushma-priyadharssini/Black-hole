@@ -16,13 +16,16 @@ class Game {
   }
 
   updateBoard(playerType, tileId) {
-    let tile = $('#' + tileId);
+	let tile = $('#' + tileId);
+	if (this.firstPlayerCount === 11 && this.secondPlayerCount === 11) {
+		return;
+	}
     if (playerType === 'P1') {
-      tile[0].innerHTML = this.firstPlayerCount;
+      tile[0].innerText = this.firstPlayerCount;
       tile.css('background-color', 'aquamarine');
       this.firstPlayerCount++;
     } else {
-      tile[0].innerHTML = this.secondPlayerCount;
+      tile[0].innerText = this.secondPlayerCount;
       tile.css('background-color', 'red');
       this.secondPlayerCount++;
     }
@@ -36,9 +39,12 @@ class Game {
   }
 
   getWinner () {
-    var blackHole = this.findBlackHole();
+	var blackHole = this.findBlackHole();
+	let blackHoleTile = $('#' + blackHole);
+	blackHoleTile[0].innerText = '??';
+	blackHoleTile.css('background-color', 'black');
     var neighbours = this.getNeighbours(blackHole);
-    this.getScore(neighbours)
+    this.getScore(neighbours);
   }
 
   findBlackHole () {
@@ -57,15 +63,26 @@ class Game {
     var row = Math.floor((-1 + Math.sqrt(1 + 8 * (blackHole))) / 2),
       triangularNumber = row*(row+1)/2,
       column = blackHole - triangularNumber;
-
-    return [
-      boardArray[row-1][column],
-      boardArray[row-1][column-1],
-      boardArray[row][column-1],
-      boardArray[row][column+1],
-      boardArray[row+1][column],
-      boardArray[row+1][column+1]
-    ];
+	var neighbours = [];
+	if ((row-1) >= 0) {
+		neighbours.push(boardArray[row-1][column]);
+	}
+    if ((column-1) >= 0) {
+		neighbours.push(boardArray[row][column-1]);
+	}
+	if ((row-1) >= 0 && (column-1) >= 0) {
+        neighbours.push(boardArray[row-1][column-1]);
+	}
+	if ((row+1) <= 5) {
+		neighbours.push(boardArray[row+1][column]);
+	}
+	if ((column+1) <= 5) {
+		neighbours.push(boardArray[row][column+1]);
+	}
+	if ((row+1) <= 5 && (column+1) <= 5) {
+		neighbours.push(boardArray[row+1][column+1]);
+	}
+    return neighbours;
   }
 
   convertBoardToArray () {
