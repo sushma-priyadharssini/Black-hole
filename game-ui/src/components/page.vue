@@ -99,7 +99,7 @@ import Game from '../helpers/game';
 let canStart = false,
 player, game;
 
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect('/');
 
 // New Game created by current client. Update the UI and create new Game var.
 socket.on('newGame', (data) => {

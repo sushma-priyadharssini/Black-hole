@@ -6,11 +6,18 @@ let rooms = 0;
 
 app.use(express.static('.'));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'game.html'));
-});
+// Handle production
+if (process.env.NODE_ENV === 'production') {
+	// Static folder
+	app.use(express.static(__dirname + '/public/'));
+  
+	// Handle SPA
+	app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 
-server = app.listen(4000);
+const port = process.env.PORT || 4000;
+
+server = app.listen(port);
 const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
